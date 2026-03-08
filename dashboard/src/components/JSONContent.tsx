@@ -1,16 +1,18 @@
 import CodeMirror from "@uiw/react-codemirror";
 import { historyField } from "@codemirror/commands";
+import { useState } from "react";
 
-export default function JSONContent() {
+export default function JSONContent({ json }: { json?: any }) {
 	const stateFields = { history: historyField };
 	const serializedState = localStorage.getItem("myEditorState");
-	const value = "";
+	const [value, setValue] = useState<any>(json);
 
 	return (
-		<div className="w-full h-full rounded-md">
+		<div className="w-full h-full rounded-md text-base">
 			<CodeMirror
 				height="384px"
 				value={value}
+				readOnly={json !== undefined}
 				initialState={
 					serializedState
 						? {
@@ -19,10 +21,8 @@ export default function JSONContent() {
 							}
 						: undefined
 				}
-				onChange={(value, viewUpdate) => {
-					// localStorage.setItem("myValue", value);
-					// const state = viewUpdate.state.toJSON(stateFields);
-					// localStorage.setItem("myEditorState", JSON.stringify(state));
+				onChange={value => {
+					setValue(value);
 				}}
 			/>
 		</div>
