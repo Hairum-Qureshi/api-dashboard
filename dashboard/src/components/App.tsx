@@ -8,10 +8,11 @@ export default function App() {
 	const [requestType, setRequestType] = useState("GET");
 	const [requests] = useState(["GET", "POST", "PUT", "DELETE", "PATCH"]);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const [selectedTab, setSelectedTab] = useState("Query Params");
 
 	return (
-		<div className="w-full min-h-screen p-4 bg-gray-50 flex justify-center items-start">
-			<div className="w-full max-w-4xl mt-20 flex items-center border border-blue-700 rounded-md">
+		<div className="w-full min-h-screen p-4 bg-gray-50 flex flex-col justify-start items-center">
+			<div className="w-full max-w-4xl mt-10 flex items-center border border-blue-700 rounded-md">
 				<div
 					className="border-r border-blue-700 font-semibold text-sky-700 flex items-center justify-center px-4 py-2 cursor-pointer relative"
 					onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -35,19 +36,51 @@ export default function App() {
 						</ul>
 					)}
 				</div>
+
 				<div className="flex flex-1 items-center px-4 py-2 gap-2">
 					<p className="text-blue-800">{BASE_ENDPOINT_URL}</p>
 					<input
 						type="text"
 						placeholder="api/endpoint-here"
-						className="flex-1 outline-none text-blue-700 border-b border-gray-300 focus:border-blue-500 transition"
+						className="flex-1 outline-none text-blue-700 underline-none border-gray-300 focus:border-blue-500 transition"
 						value={endpointURL}
 						onChange={e => setEndpointURL(e.target.value)}
 					/>
 				</div>
+
 				<button className="bg-blue-500 rounded-md hover:cursor-pointer text-white px-6 py-2 hover:bg-blue-600 transition">
 					Send
 				</button>
+			</div>
+
+			<div className="w-full max-w-4xl mt-10">
+				<div className="text-sm font-medium text-center text-gray-700 border-b border-gray-300">
+					<ul className="flex flex-wrap">
+						{["JSON", "Query Params", "Body", "Headers"].map(tab => (
+							<li key={tab} className="-mb-px">
+								<button
+									className={`inline-block p-4 border-b-2 ${
+										selectedTab === tab
+											? "border-blue-600 text-blue-800"
+											: "border-transparent text-blue-400 hover:text-blue-800 hover:cursor-pointer"
+									}`}
+									onClick={() => setSelectedTab(tab)}
+								>
+									{tab}
+								</button>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<div className="p-2 border border-t-0 border-gray-300 rounded-b-lg">
+					{selectedTab === "JSON" && <div id="json">JSON Content</div>}
+					{selectedTab === "Query Params" && (
+						<div id="query">Query Params Content</div>
+					)}
+					{selectedTab === "Body" && <div id="body">Body Content</div>}
+					{selectedTab === "Headers" && <div id="headers">Headers Content</div>}
+				</div>
 			</div>
 		</div>
 	);
